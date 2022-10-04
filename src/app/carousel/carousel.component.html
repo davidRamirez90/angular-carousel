@@ -48,9 +48,46 @@
   </div>
 </ng-template>
 
+<ng-template #carouselPaginationTemplate let-slide> </ng-template>
+
+<ng-template
+  #dotPaginationTemplate
+  let-slide
+  let-position="idx"
+  let-length="length"
+>
+  <button
+    class="carousel--control"
+    type="button"
+    role="tab"
+    title="Item {{ position }}: {{ slide.alt }}"
+    [attr.aria-label]="slide.alt"
+    [attr.aria-controls]="'carousel-item-' + position"
+    [attr.aria-setsize]="length"
+    [attr.aria-posinset]="position"
+  ></button>
+</ng-template>
+
+<ng-template #paginationTemplate>
+  <nav class="carousel--pagination" [ngClass]="'--' + pagination">
+    <ng-container *ngFor="let slide of slides; index as i">
+      <ng-container
+        *ngTemplateOutlet="
+          pagination === 'gallery'
+            ? carouselPaginationTemplate
+            : dotPaginationTemplate;
+          context: { $implicit: slide, idx: i, length: slides.length }
+        "
+      >
+      </ng-container>
+    </ng-container>
+  </nav>
+</ng-template>
+
 <div class="carousel">
+  <ng-container *ngTemplateOutlet="paginationTemplate"></ng-container>
   <ng-container *ngTemplateOutlet="carouselControls"> </ng-container>
-  <div class="carousel--scroller">
+  <div class="carousel--scroller" #scroller>
     <div class="carousel--snap" *ngFor="let slide of slides">
       <ng-container
         *ngTemplateOutlet="

@@ -1,9 +1,11 @@
 import {
   Component,
   ContentChild,
+  ElementRef,
   Input,
   OnInit,
   TemplateRef,
+  ViewChild,
 } from '@angular/core';
 import { Slide } from '../carousel.model';
 
@@ -15,38 +17,38 @@ import { Slide } from '../carousel.model';
 export class CarouselComponent implements OnInit {
   @Input() slides!: Slide[];
   @Input() carouselControls: 'none' | 'auto' = 'auto';
+  @Input() pagination: 'gallery' | 'dots' | 'none' = 'dots';
+
   @ContentChild('snapItem') snapItem!: TemplateRef<any>;
 
-  projects = [
-    {
-      name: 'proj1',
-      processes: [
-        {
-          name: 'proc1',
-          date: new Date('05 October 2022 14:48 UTC'),
-        },
-        {
-          name: 'proc2',
-          date: new Date('06 October 2022 14:48 UTC'),
-        },
-      ],
-    },
-    {
-      name: 'proj2',
-      processes: [
-        {
-          name: 'zzz',
-          date: new Date('20 October 2022 14:48 UTC'),
-        },
-        {
-          name: 'aaa',
-          date: new Date('01 October 2022 14:48 UTC'),
-        },
-      ],
-    },
-  ];
+  @ViewChild('scroller', { static: false, read: ElementRef })
+  carouselScroller: ElementRef;
+
+  private _observer: IntersectionObserver | undefined;
+  private _hasIntersected: Set<IntersectionObserverEntry> = new Set();
 
   constructor() {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    /**
+    console.log(this.carouselScroller);
+    this._observer = new IntersectionObserver(
+      (observations) => {
+        for (let observation of observations) {
+          console.log(observation);
+          this._hasIntersected.add(observation);
+
+          observation.target.classList.toggle(
+            '--in-view',
+            observation.isIntersecting
+          );
+        }
+      },
+      {
+        root: this.carouselScroller.nativeElement,
+        threshold: 0.6,
+      }
+    );
+     */
+  }
 }
