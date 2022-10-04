@@ -1,0 +1,11 @@
+<h1 class="title">Angular 12 , Basic Angular Template</h1>
+
+<h4>First carousel</h4>
+<app-carousel [slides]="slides"></app-carousel>
+
+<h4>Second carousel</h4>
+<app-carousel [slides]="slides">
+  <ng-template #snapItem let-item>
+    <span>this is a custom item {{ item }}</span>
+  </ng-template>
+</app-carousel>

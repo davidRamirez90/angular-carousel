@@ -1,0 +1,159 @@
+/* 1. Carousel styles */
+:where(.carousel) {
+  --_carousel-item-size: 80%;
+  --_carousel-spacing: max(4rem, calc((100% - var(--_carousel-item-size)) / 2));
+  --_carousel-scrollbar-space: var(--size-6);
+  --_carousel-pagination-size: var(--size-8);
+
+  display: grid;
+  grid-template-columns: [carousel-spacing] var(--_carousel-spacing) 1fr [carousel-spacing] var(
+      --_carousel-spacing
+    );
+
+  grid-template-rows:
+    [carousel-scroller] 1fr
+    [carousel-pagination] var(--_carousel-pagination-size);
+
+  &:focus-visible {
+    outline-offset: -5px;
+  }
+
+  /* In case we are implementing a gallery pagination */
+  &[carousel-pagination='gallery'] {
+    --_carousel-pagination-size: var(--size-10);
+
+    & > .carousel--pagination {
+      mask-image: linear-gradient(
+        to right,
+        #0000 0%,
+        #000 5%,
+        95%,
+        #000,
+        #0000
+      );
+    }
+  }
+
+  /* In case we are implementing no pagination */
+  &[carousel-pagination='none'] {
+    grid-template-rows: [carousel-scroller] 1fr;
+
+    & > .carousel--pagination {
+      display: none;
+    }
+  }
+
+  /* In case we have no carousel controls */
+  &[carousel-control='none'] {
+    grid-template-columns: 0 1fr 0;
+
+    & > .carousel--controls {
+      display: none;
+    }
+  }
+
+  /* In case we have no scrollbars */
+  &[carousel-scrollbar='none'] {
+    --_carousel-pagination-size: var(--size-5);
+
+    & > .carousel--scroller {
+      scrollbar-width: none;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+
+    & > .carousel--pagination {
+      place-self: start center;
+    }
+  }
+
+  /* In case we have snapping scroll */
+  &[carousel-snapstop='always'] .carousel--snap {
+    scroll-snap-stop: always;
+  }
+}
+
+/* 2. Scrollbar styles */
+:where(.carousel--scroller) {
+  grid-row: 1;
+  grid-column: 1 / -1;
+
+  display: grid;
+  grid-auto-columns: 100%;
+  grid-auto-flow: column;
+  align-items: center;
+  gap: var(--_carousel-spacing);
+
+  padding-block: var(--size-2) var(--_carousel-scrollbar-space);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--_carousel-spacing);
+  padding-inline: var(--_carousel-spacing);
+
+  /* Handles gracefuly user choices like prefer no motion */
+  @media (--motionOK) {
+    scroll-behavior: smooth;
+  }
+}
+
+/* 3. Control styles */
+:where(.carousel--control) {
+  --_shadow-size: 0;
+  --_shadow-highlight-light: hsl(0 0% 50% / 10%);
+  --_shadow-highlight-dark: hsl(0 0% 100% / 20%);
+  --_shadow-highlight: var(--_shadow-highlight-light);
+
+  transition: opacity 0.5s var(--ease-2) 0.5s, transform 0.2s var(--ease-4),
+    box-shadow 0.2s var(--ease-4), outline-offset 145ms var(--ease-2);
+
+  &:hover {
+    --_shadow-size: 6px;
+  }
+
+  &.--previous {
+    grid-column: 1;
+  }
+
+  &.--next {
+    grid-column: 3;
+  }
+
+  // Styles for disabled control
+  &[disabled] {
+    cursor: not-allowed;
+    transition-delay: 0s;
+
+    & > svg {
+      opacity: 0.25;
+    }
+  }
+
+  // Control is not disabled and has been focused or visible
+  &:not([disabled]):is(:hover, :focus-visible) {
+    color: var(--link);
+  }
+
+  &:not([disabled]) svg > path {
+    --_transform: translateX(var(--_x)) scale(0.95);
+    transition: transform 0.5s var(--ease-squish-3);
+    transform-origin: center center;
+  }
+
+  // We can use accesibility properties as selectors
+  &[aria-label='Next Item']:not([disabled]):is(:hover, :focus-visible)
+    svg
+    > path {
+    --_x: 2px;
+    transform: var(--_transform);
+  }
+
+  &[aria-label='Previous Item']:not([disabled]):is(:hover, :focus-visible)
+    svg
+    > path {
+    --_x: -2px;
+    transform: var(--_transform);
+  }
+}

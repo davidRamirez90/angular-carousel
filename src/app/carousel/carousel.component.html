@@ -1,0 +1,68 @@
+<ng-template #defaultSnapItem let-slide>
+  <figure class="animate-visibility captioned-image">
+    <img
+      loading="lazy"
+      [width]="slide.width"
+      [height]="slide.height"
+      [src]="slide.url"
+      [alt]="slide.alt"
+    />
+    <figcaption>
+      <a href="#">{{ slide.caption }}</a>
+    </figcaption>
+  </figure>
+</ng-template>
+
+<ng-template #carouselControls>
+  <div class="carousel--controls">
+    <!-- Previous button -->
+    <button
+      aria-controls="carousel--controls"
+      aria-label="Previous item"
+      type="button"
+      class="carousel--control --previous"
+    >
+      <svg aria-hidden="true" viewBox="0 0 20 20" fill="currentColor">
+        <path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+        ></path>
+      </svg>
+    </button>
+    <!-- Next button -->
+    <button
+      aria-controls="carousel--controls"
+      aria-label="Next item"
+      type="button"
+      class="carousel--control --next"
+    >
+      <svg aria-hidden="true" viewBox="0 0 20 20" fill="currentColor">
+        <path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+        ></path>
+      </svg>
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #greet>
+  <span>hola</span>
+</ng-template>
+
+<div class="carousel">
+  <ng-container #ngTemplateOutlet="greet"> </ng-container>
+  <div class="carousel--scroller">
+    <div class="carousel--snap" *ngFor="let slide of slides">
+      <ng-container
+        *ngTemplateOutlet="
+          snapItem || defaultSnapItem;
+          context: { $implicit: slide }
+        "
+      >
+      </ng-container>
+    </div>
+  </div>
+</div>
