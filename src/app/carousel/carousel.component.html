@@ -48,12 +48,8 @@
   </div>
 </ng-template>
 
-<ng-template #greet>
-  <span>hola</span>
-</ng-template>
-
 <div class="carousel">
-  <ng-container #ngTemplateOutlet="greet"> </ng-container>
+  <ng-container *ngTemplateOutlet="carouselControls"> </ng-container>
   <div class="carousel--scroller">
     <div class="carousel--snap" *ngFor="let slide of slides">
       <ng-container

@@ -1,3 +1,8 @@
+:where(img, svg, video) {
+  block-size: auto;
+  max-inline-size: 100%;
+}
+
 /* 1. Carousel styles */
 :where(.carousel) {
   --_carousel-item-size: 80%;
@@ -75,7 +80,7 @@
   }
 }
 
-/* 2. Scrollbar styles */
+/* 2. Carousel Scrollbar styles */
 :where(.carousel--scroller) {
   grid-row: 1;
   grid-column: 1 / -1;
@@ -99,15 +104,35 @@
   }
 }
 
-/* 3. Control styles */
+/* 3. Carousel Control styles */
 :where(.carousel--control) {
   --_shadow-size: 0;
   --_shadow-highlight-light: hsl(0 0% 50% / 10%);
   --_shadow-highlight-dark: hsl(0 0% 100% / 20%);
   --_shadow-highlight: var(--_shadow-highlight-light);
 
+  grid-row: 1;
+  place-self: center;
+  background: var(--surface-1);
+  color: var(--text-2);
+  inline-size: var(--size-8);
+  aspect-ratio: var(--ratio-square);
+  border-radius: var(--radius-round);
+  box-shadow: 0 0 0 var(--_shadow-size) var(--_shadow-highlight);
+  border: var(--border-size-1) solid transparent;
+  text-indent: 10ch;
+  padding: 0;
+  overflow: hidden;
+  z-index: var(--layer-1);
+
   transition: opacity 0.5s var(--ease-2) 0.5s, transform 0.2s var(--ease-4),
     box-shadow 0.2s var(--ease-4), outline-offset 145ms var(--ease-2);
+
+  & > svg {
+    inline-size: var(--size-10);
+    stroke: none;
+    fill: currentColor;
+  }
 
   &:hover {
     --_shadow-size: 6px;
@@ -156,4 +181,10 @@
     --_x: -2px;
     transform: var(--_transform);
   }
+}
+
+/* 4. Carousel Pagination styles */
+:where(.gui-carousel--pagination) {
+  grid-column: 1/-1;
+  place-self: center;
 }
