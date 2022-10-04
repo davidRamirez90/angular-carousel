@@ -84,18 +84,20 @@
   </nav>
 </ng-template>
 
-<div class="carousel">
+<div class="carousel" #carousel>
   <ng-container *ngTemplateOutlet="paginationTemplate"></ng-container>
   <ng-container *ngTemplateOutlet="carouselControls"> </ng-container>
   <div class="carousel--scroller" #scroller>
-    <div class="carousel--snap" *ngFor="let slide of slides">
-      <ng-container
-        *ngTemplateOutlet="
+    <ng-container  *ngFor="let slide of slides">
+      <div *slideVisible #snap class="carousel--snap">
+        <ng-container
+            *ngTemplateOutlet="
           snapItem || defaultSnapItem;
           context: { $implicit: slide }
         "
-      >
-      </ng-container>
-    </div>
+        >
+        </ng-container>
+      </div>
+    </ng-container>
   </div>
 </div>

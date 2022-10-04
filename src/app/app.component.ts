@@ -24,5 +24,12 @@ export class AppComponent {
       alt: 'Frosty orange desert sunset',
       caption: 'Learn more about sunsets',
     },
+    {
+      url: 'https://picsum.photos/seed/a/1280/720.webp',
+      width: 1280,
+      height: 720,
+      alt: 'African sahara with a giraffe',
+      caption: 'Learn more about giraffes',
+    }
   ];
 }
