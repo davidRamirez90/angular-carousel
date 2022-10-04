@@ -21,6 +21,7 @@
       aria-label="Previous item"
       type="button"
       class="carousel--control --previous"
+      (click)="goPrevious()"
     >
       <svg aria-hidden="true" viewBox="0 0 20 20" fill="currentColor">
         <path
@@ -36,6 +37,7 @@
       aria-label="Next item"
       type="button"
       class="carousel--control --next"
+      (click)="goNext()"
     >
       <svg aria-hidden="true" viewBox="0 0 20 20" fill="currentColor">
         <path
@@ -65,6 +67,7 @@
     [attr.aria-controls]="'carousel-item-' + position"
     [attr.aria-setsize]="length"
     [attr.aria-posinset]="position"
+    (click)="handlePaginate(position)"
   ></button>
 </ng-template>
 
@@ -85,11 +88,14 @@
 </ng-template>
 
 <div class="carousel" #carousel>
-  <ng-container *ngTemplateOutlet="paginationTemplate"></ng-container>
-  <ng-container *ngTemplateOutlet="carouselControls"> </ng-container>
   <div class="carousel--scroller" #scroller>
-    <ng-container  *ngFor="let slide of slides">
-      <div *slideVisible #snap class="carousel--snap">
+    <ng-container  *ngFor="let slide of slides; index as slideIdx">
+      <div
+        #snap
+        *slideVisible
+        class="carousel--snap"
+        [attr.aria-label]="slideIdx+1 + '/' + slides.length"
+        [attr.aria-roledescription]="'item'">
         <ng-container
             *ngTemplateOutlet="
           snapItem || defaultSnapItem;
@@ -100,4 +106,6 @@
       </div>
     </ng-container>
   </div>
+  <ng-container *ngTemplateOutlet="paginationTemplate"></ng-container>
+  <ng-container *ngTemplateOutlet="carouselControls"> </ng-container>
 </div>

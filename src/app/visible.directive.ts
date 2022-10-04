@@ -1,4 +1,11 @@
-import {AfterViewInit, Directive, TemplateRef, ViewContainerRef} from "@angular/core";
+import {
+  AfterContentChecked,
+  AfterViewChecked,
+  AfterViewInit,
+  Directive,
+  TemplateRef,
+  ViewContainerRef
+} from "@angular/core";
 
 @Directive({selector: '[slideVisible]'})
 export class VisibleDirective  implements AfterViewInit {
@@ -21,8 +28,11 @@ export class VisibleDirective  implements AfterViewInit {
    */
     ngAfterViewInit() {
       this._vcRef.createEmbeddedView(this._templateRef);
+      console.log(this._vcRef)
+      console.log(this._templateRef)
 
       const elementToObserve = this._vcRef.element.nativeElement.previousElementSibling;
+      console.log(elementToObserve)
       const parentScroller = this._vcRef.element.nativeElement.parentElement;
 
       const observer = new IntersectionObserver((entries) => {
